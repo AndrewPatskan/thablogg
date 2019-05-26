@@ -33,7 +33,7 @@ class SignUp extends Component {
     //Не забувай ретурнити проміс з Axios
       return axios({
       method:'post',
-      url:'http://localhost:7777',
+      url:'https://thablogg.herokuapp.com',
       headers:{'Content-type':'application/json'}, // Ще сеть контент тайп цей, це для json інакше поля не будуть в боді
       data:{
       firstname: this.state.firstname,
@@ -45,7 +45,7 @@ class SignUp extends Component {
       //Бо тут респонса не буде
       console.log(response);
       if(response.data==='success'){
-        window.location.assign('http://localhost:3000/signin')
+        window.location.assign('https://thablogg.herokuapp.com/signin')
       }
     })
     .catch(function (error) {

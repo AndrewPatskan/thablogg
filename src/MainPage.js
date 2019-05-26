@@ -30,7 +30,7 @@ class MainPage extends Component {
         addPost(){
               return axios({
               method:'post',
-              url:'http://localhost:7777/addpost',
+              url:'https://thablogg.herokuapp.com/addpost',
               headers:{'Content-type':'application/json'},
               data:{
               title: this.state.title,
@@ -39,7 +39,7 @@ class MainPage extends Component {
               id: this.state.id
             }})
             .then(function (response) {
-              window.location.assign('http://localhost:3000/posts')
+              window.location.assign('https://thablogg.herokuapp.com/posts')
             })
             .catch(function (error) {
               console.log(error);
@@ -50,7 +50,7 @@ class MainPage extends Component {
           const self = this;
           return axios({
             method:'post',
-            url:'http://localhost:7777/getpostwithid',
+            url:'https://thablogg.herokuapp.com/getpostwithid',
             headers:{'Content-type':'application/json'},
             data:{
               id: id
