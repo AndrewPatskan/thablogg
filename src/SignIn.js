@@ -32,7 +32,7 @@ class SignIn extends Component {
         .then(function (response) {
           console.log(response);
           if(response.data==='success'){
-            window.location.assign('http://localhost:3000/posts');
+            window.location.assign('https://thablogg.herokuapp.com/posts');
           }
         })
         .catch(function (err) {

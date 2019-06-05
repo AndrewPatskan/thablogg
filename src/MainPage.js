@@ -39,7 +39,7 @@ class MainPage extends Component {
               id: this.state.id
             }})
             .then(function (response) {
-              window.location.assign('http://localhost:3000/posts')
+              window.location.assign('https://thablogg.herokuapp.com/posts')
             })
             .catch(function (error) {
               console.log(error);

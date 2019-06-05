@@ -43,7 +43,7 @@ class SignUp extends Component {
     .then(function (response) {
       console.log(response);
       if(response.data==='success'){
-        window.location.assign('http://localhost:3000/signin')
+        window.location.assign('https://thablogg.herokuapp.com/signin')
       }
     })
     .catch(function (error) {
