@@ -30,11 +30,10 @@ class SignUp extends Component {
     this.setState({password:e.target.value})
   }
   signUp(){
-    //Не забувай ретурнити проміс з Axios
       return axios({
       method:'post',
-      url:'https://thablogg.herokuapp.com',
-      headers:{'Content-type':'application/json'}, // Ще сеть контент тайп цей, це для json інакше поля не будуть в боді
+      url:'http://localhost:7777',
+      headers:{'Content-type':'application/json'},
       data:{
       firstname: this.state.firstname,
       lastname: this.state.lastname,
@@ -42,10 +41,9 @@ class SignUp extends Component {
       password: this.state.password
     }}    )
     .then(function (response) {
-      //Бо тут респонса не буде
       console.log(response);
       if(response.data==='success'){
-        window.location.assign('https://thablogg.herokuapp.com/signin')
+        window.location.assign('http://localhost:3000/signin')
       }
     })
     .catch(function (error) {

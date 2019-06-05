@@ -2,7 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID
 const assert = require('assert');
 
-const url = process.env.MONGODB_URI || 'mongodb://localhost:27017/ThaBlogg';
+const url = 'mongodb://localhost:27017/ThaBlogg';
 const mongoClient = new MongoClient(url, { useNewUrlParser: true });
 
 exports.addpost = (title,subject,author,callback)=>{

@@ -23,7 +23,7 @@ class SignIn extends Component {
     signIn(){
           return axios({
           method:'post',
-          url:'https://thablogg.herokuapp.com/signin',
+          url:'http://localhost:7777/signin',
           headers:{'Content-type':'application/json'},
           data:{
           login: this.state.login,
@@ -32,7 +32,7 @@ class SignIn extends Component {
         .then(function (response) {
           console.log(response);
           if(response.data==='success'){
-            window.location.assign('https://thablogg.herokuapp.com/posts');
+            window.location.assign('http://localhost:3000/posts');
           }
         })
         .catch(function (err) {

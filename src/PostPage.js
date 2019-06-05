@@ -14,13 +14,13 @@ class PostPage extends Component {
         };
       }
     updatePost(id){
-      window.location.assign('https://thablogg.herokuapp.com/addpost/'+id);
+      window.location.assign('http://localhost:3000/addpost/'+id);
     }
     delPost(id){
         const self = this;
             return axios({
                 method:'post',
-                url:'https://thablogg.herokuapp.com/deletepost',
+                url:'http://localhost:7777/deletepost',
                 headers:{'Content-type':'application/json'},
                 data: {
                     id: id
@@ -40,7 +40,7 @@ class PostPage extends Component {
        
         return axios({
             method:'post',
-              url:'https://thablogg.herokuapp.com/posts',
+              url:'http://localhost:7777/posts',
               headers:{'Content-type':'application/json'},
         })
         .then(function (response) {
