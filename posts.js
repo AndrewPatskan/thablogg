@@ -2,13 +2,13 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID
 const assert = require('assert');
 
-const url = 'mongodb://localhost:27017/ThaBlogg';
+const url = 'mongodb+srv://AndrewP:25122012st@cluster0-fejao.mongodb.net/test?retryWrites=true&w=majority';
 const mongoClient = new MongoClient(url, { useNewUrlParser: true });
 
 exports.addpost = (title,subject,author,callback)=>{
     mongoClient.connect(function(err, client) {
-        const db = client.db("ThaBlogg");
-        const collection = db.collection("posts");
+        const db = client.db('ThaBlogg');
+        const collection = db.collection('posts');
         collection.insertOne( {
             "title": title,
             "subject": subject,
