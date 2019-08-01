@@ -29,7 +29,8 @@
 .btn {
   width: 75px;
   height: 30px;
-  margin: auto;
+  margin-left: 10px;
+  margin-right: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
   border: none;
@@ -66,4 +67,9 @@
 }
 .newpost {
   position: center;
+}
+#postt, #addform {
+  border: 1px solid white;
+  border-radius: 0 10px;
+  margin-top: 10px;
 }

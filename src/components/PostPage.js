@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css'
+import '../styles/App.css';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 
@@ -14,7 +14,7 @@ class PostPage extends Component {
         };
       }
     updatePost(id){
-      window.location.assign('https://thablogg.herokuapp.com/addpost/'+id);
+      window.location.assign('http://localhost:3000/addpost/'+id);
     }
     delPost(id){
         const self = this;
@@ -54,7 +54,6 @@ class PostPage extends Component {
         this.getPost();
       }
     logout(){
-      //its just a training code
       const mess = document.createElement('h7');
       const node = document.createTextNode('logout is not workin yet');
       mess.appendChild(node);
@@ -69,7 +68,7 @@ class PostPage extends Component {
             <br/>
             {
                 this.state.posts.reverse().map(function(post,index) {
-                    return <div key={index}>
+                    return <div id='postt' key={index}>
                         <h6>{post.title}</h6>
                         <p>{post.subject}</p>
                         <h6>{post.author}</h6>

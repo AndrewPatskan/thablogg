@@ -2,16 +2,18 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const http = require('http');
-const user = require('./user');
-const posts = require('./posts');
-const session = require('express-session');
 const bodyParser = require('body-parser');
-const PORT = process.env.PORT || 7777;
 
 app.use(express.static(path.join(__dirname,'/public/index.html')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(session({secret: 'my-secret', saveUninitialized: true, resave: true}));
+
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'development';
+  //process.env.NODE_ENV = 'production';
+}
+
+const config = require('./config/' + process.env.NODE_ENV);
 
 const allowCrossDomain = function (req, res, next) {
     const browser = req.headers['user-agent'];
@@ -31,81 +33,11 @@ const allowCrossDomain = function (req, res, next) {
 };
 app.use(allowCrossDomain);
 
-
-app.post('/', function (req, res, next) {
-    const firstname = req.body.firstname;
-    const lastname = req.body.lastname;
-    const login = req.body.login;
-    const password = req.body.password;
- 
-  if(firstname && lastname && login && password){
-      user.signup(firstname, lastname, login, password);
-      //no safety
-      res.send('success');
-  }
-  else{
-    const err = new Error('wrong data');
-    return next(err);
-  }
-  });
-
-app.post('/signin', function (req, res, next) {
-    const sessions=req.session;
-    const login = req.body.login;
-    const password = req.body.password;
-        user.signin(login, password, function(result){
-        if(result){
-            sessions.login = login;
-            res.send('success');
-          }
-          else{
-            const err = new Error('wrong data');
-            return next(err);
-          }
-    });
-    
-  });
-  
-app.post('/addpost', function (req, res) {
-    console.log(req.body.id);
-    const title = req.body.title;
-    const subject = req.body.subject;
-    const author = req.body.author;
-    const id = req.body.id;
-    if(!id){
-    posts.addpost(title, subject, author, function(result){
-      res.send(result);
-    }); 
-  }
-  else{
-    posts.updatepost(id, title, subject, author, function(result){
-      res.send(result);
-    }); 
-  }
-});
-
-app.post('/posts', function (req, res,next) {
-    posts.showpost(function(result){
-      res.send(result);
-    });
-  });
-
-app.post('/deletepost', function(req,res){
-    const id = req.body.id;
-    posts.deletepost(id, function(result){
-      res.send(result);
-    })
-  });
-
-app.post('/getpostwithid', function(req,res){
-    const id = req.body.id;
-    posts.getPostWithId(id, function(result){
-      res.send(result);
-    })
-  });
+app.use(require('./routes/auth'));
+app.use(require('./routes/postActions'));
 
 const httpServer = http.createServer(app);
 
-httpServer.on('listening', () =>  console.log('Started listening on port', PORT));
+httpServer.on('listening', () =>  console.log('Started listening on port', config.port));
 
-httpServer.listen(PORT, 'localhost');
+httpServer.listen(config.port, config.host);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import '../styles/App.css';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 
@@ -32,7 +32,7 @@ class SignIn extends Component {
         .then(function (response) {
           console.log(response);
           if(response.data==='success'){
-            window.location.assign('https://thablogg.herokuapp.com/posts');
+            window.location.assign('http://localhost:3000/posts');
           }
         })
         .catch(function (err) {

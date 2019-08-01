@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import SignUp from './SignUp';
-import SignIn from './SignIn';
-import MainPage from './MainPage';
-import PostPage from './PostPage';
+import './styles/index.css';
+import SignUp from './components/SignUp';
+import SignIn from './components/SignIn';
+import MainPage from './components/MainPage';
+import PostPage from './components/PostPage';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Route } from 'react-router-dom';
 
