@@ -14,7 +14,7 @@ class PostPage extends Component {
         };
       }
     updatePost(id){
-      window.location.assign('http://localhost:3000/addpost/'+id);
+      window.location.assign('/addpost/'+id);
     }
     delPost(id){
         const self = this;

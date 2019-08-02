@@ -2,7 +2,7 @@
 module.exports = new class {
     constructor() {
         this.mongo = {
-            dbName: 'storesSystem',
+            dbName: 'ThaBlogg',
             modelConfig: {
                 versionKey: false,
                 timestamps: true

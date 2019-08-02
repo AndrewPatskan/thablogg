@@ -54,7 +54,7 @@ class MainPage extends Component {
             }})
             .then(function (response) {
               console.log('succ');
-              window.location.assign('http://localhost:3000/posts')
+              window.location.assign('/posts')
             })
             .catch(function (error) {
               console.log(error);

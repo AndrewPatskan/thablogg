@@ -101,7 +101,7 @@ handleUserInput = (e) => {
     .then(function (response) {
       console.log(response);
       if(response.data==='success'){
-        window.location.assign('http://localhost:3000/signin')
+        window.location.assign('/signin')
       }
     })
     .catch(function (error) {
