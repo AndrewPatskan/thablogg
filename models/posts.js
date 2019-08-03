@@ -2,10 +2,8 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID
 const assert = require('assert');
 
-if (!process.env.NODE_ENV) {
-    process.env.NODE_ENV = 'development';
-    //process.env.NODE_ENV = 'production';
-  }
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
 const config = require('../config/'+ process.env.NODE_ENV);
 
 const url = config.mongo.connectionString;

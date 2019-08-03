@@ -8,10 +8,7 @@ app.use(express.static(path.join(__dirname,'/public/index.html')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
-if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = 'development';
-  //process.env.NODE_ENV = 'production';
-}
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 const config = require('./config/' + process.env.NODE_ENV);
 
