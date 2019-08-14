@@ -3,44 +3,29 @@ import '../styles/App.css';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import { FormErrors } from './FormErrors';
+import {VALIDATION} from '../regExp';
 
 class SignUp extends Component {
   constructor(props){
     super(props);
     this.signUp = this.signUp.bind(this);
-    /*this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
-    this.handleLastNameChange = this.handleLastNameChange.bind(this);
-    this.handleLoginChange = this.handleLoginChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this); */
     this.handleUserInput = this.handleUserInput.bind(this);
     this.validateField = this.validateField.bind(this);
     this.validateForm = this.validateForm.bind(this);
     this.state = {
       firstname:'',
       lastname: '',
-      login: '',
+      email: '',
       password:'',
-      formErrors: {firstname: '', lastname: '', login: '', password: ''},
+      formErrors: {firstname: '', lastname: '', email: '', password: ''},
       firstnameValid: false,
       lastnameValid: false,
-      loginValid: false,
+      emailValid: false,
       passwordValid: false,
       formValid: false
     };
   }
- /* handleFirstNameChange(e){
-    this.setState({firstname:e.target.value})
-  }
-  handleLastNameChange(e){
-    this.setState({lastname:e.target.value})
-  }
-  handleLoginChange(e){
-    this.setState({login:e.target.value})
-  }
-  handlePasswordChange(e){
-    this.setState({password:e.target.value})
-  }
-*/
+
 handleUserInput = (e) => {
   const name = e.target.name;
   const value = e.target.value;
@@ -52,25 +37,25 @@ handleUserInput = (e) => {
     let fieldValidationErrors = this.state.formErrors;
     let firstnameValid = this.state.firstnameValid;
     let lastnameValid = this.state.lastnameValid;
-    let loginValid = this.state.loginValid;
+    let emailValid = this.state.emailValid;
     let passwordValid = this.state.passwordValid;
 
     switch(fieldName) {
       case 'firstname':
-        firstnameValid = value.length >= 6;
-        fieldValidationErrors.firstname = firstnameValid ? '' : ' has unexpected symbol';
+        firstnameValid = value.length >= 2;
+        fieldValidationErrors.firstname = firstnameValid ? '' : ' is too short';
         break;
       case 'lastname':
-        lastnameValid = value.length >= 6;
-        fieldValidationErrors.lastname = lastnameValid ? '' : ' has unexpected symbol';
+        lastnameValid = value.length >= 2;
+        fieldValidationErrors.lastname = lastnameValid ? '' : ' is too short';
         break;
-      case 'login':
-        loginValid = value.length >= 6;
-        fieldValidationErrors.login = loginValid ? '' : ' has unexpected symbol';
+      case 'email':
+        emailValid = VALIDATION.EMAIL.test(value);
+        fieldValidationErrors.email = emailValid ? '' : ' is too short or has unexpected symbol';
         break;
       case 'password':
-        passwordValid = value.length >= 6;
-        fieldValidationErrors.password = passwordValid ? '': ' is too short';
+        passwordValid = VALIDATION.PASSWORD.test(value);
+        fieldValidationErrors.password = passwordValid ? '': ' is too short or has unexpected symbol';
         break;
       default:
         break;
@@ -78,13 +63,13 @@ handleUserInput = (e) => {
     this.setState({formErrors: fieldValidationErrors,
                     firstnameValid: firstnameValid,
                     lastnameValid: lastnameValid,
-                    loginValid: loginValid,
+                    emailValid: emailValid,
                     passwordValid: passwordValid
                   }, this.validateForm);
   }
 
   validateForm() {
-    this.setState({formValid: this.state.firstnameValid && this.state.lastnameValid && this.state.loginValid && this.state.passwordValid});
+    this.setState({formValid: this.state.firstnameValid && this.state.lastnameValid && this.state.emailValid && this.state.passwordValid});
   }
 
   signUp(){
@@ -95,26 +80,30 @@ handleUserInput = (e) => {
       data:{
       firstname: this.state.firstname,
       lastname: this.state.lastname,
-      login: this.state.login,
+      email: this.state.email,
       password: this.state.password
     }}    )
     .then(function (response) {
-      console.log(response);
       if(response.data==='success'){
         window.location.assign('/signin')
       }
     })
     .catch(function (error) {
-      console.log(error);
+        console.log(error);
+        const mess = document.createElement('h7');
+            const node = document.createTextNode('this email is already exists');
+            mess.appendChild(node);
+            const div = document.getElementById('signupform');
+            div.appendChild(mess);
     });
    
   }
   render() {
     return (
-      <div className='signup'>
+      <div className='signup' id='signupform'>
           <input type='firstname' name='firstname' value={this.state.firstname} className='data' id='firstname' placeholder='First Name' onChange={this.handleUserInput}/>
           <input type='lastname' name='lastname' value={this.state.lastname} className='data' id='lastname' placeholder='Last Name' onChange={this.handleUserInput}/>
-          <input type='login' name='login' value={this.state.login} className='data' id='login' placeholder='Login' onChange={this.handleUserInput} required/>
+          <input type='email' name='email' value={this.state.email} className='data' id='email' placeholder='Email' onChange={this.handleUserInput} required/>
           <input type='password' name='password' value={this.state.password} className='data' id='password' placeholder='Password' onChange={this.handleUserInput}/>
           <button className='btn' onClick={this.signUp} disabled={!this.state.formValid}>sign up</button>
           <div>

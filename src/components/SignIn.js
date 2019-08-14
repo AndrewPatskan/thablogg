@@ -7,18 +7,18 @@ class SignIn extends Component {
     constructor(props){
         super(props);
         this.signIn = this.signIn.bind(this);
-        this.handleLoginChange = this.handleLoginChange.bind(this);
+        this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.state = {
-            login:'',
+            email:'',
             password:''
         };
     }
-    handleLoginChange(e){
-        this.setState({login:e.target.value})
+    handleEmailChange(e){
+        this.setState({email:e.target.value});
     }
     handlePasswordChange(e){
-        this.setState({password:e.target.value})
+        this.setState({password:e.target.value});
     }
     signIn(){
           return axios({
@@ -26,30 +26,32 @@ class SignIn extends Component {
           url:'http://localhost:7777/signin',
           headers:{'Content-type':'application/json'},
           data:{
-          login: this.state.login,
-          password: this.state.password
-        }}    )
+            email: this.state.email,
+            password: this.state.password
+        }
+      })
         .then(function (response) {
-          console.log(response);
-          if(response.data==='success'){
+          if(response){
+            console.log(response);
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('userEmail', response.data.email);
             window.location.assign('/posts');
           }
         })
         .catch(function (err) {
           if(err){
             const mess = document.createElement('h7');
-            const node = document.createTextNode('wrong login or password...try again');
+            const node = document.createTextNode('wrong email or password... try again');
             mess.appendChild(node);
             const div = document.getElementById('signinform');
             div.appendChild(mess);
           }
         });
-       
       }
     render() {
         return (
         <div className='signin' id='signinform'>
-                <input type='login' className='data' id='login' placeholder='Login' onChange={this.handleLoginChange}/>
+                <input type='email' className='data' id='email' placeholder='Email' onChange={this.handleEmailChange}/>
                 <input type='password' className='data' id='password' placeholder='Password' onChange={this.handlePasswordChange}/>
                 <button className='btn' onClick={this.signIn}>sign in</button>
                 <div>

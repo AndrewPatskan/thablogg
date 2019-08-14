@@ -1,43 +1,73 @@
 const express = require('express');
 const router = express.Router();
-const posts = require('../models/posts');
+const Posts = require('../models/posts');
+const checkAuth = require('../helpers/accessToken');
 
-router.post('/getpostwithid', function(req,res){
+router.post('/getpostwithid', checkAuth, function(req,res){
     const id = req.body.id;
-    posts.getPostWithId(id, function(result){
+    Posts.findById(id)
+    .then(result=>{
       res.send(result);
     })
+    .catch(err=>{
+      return next(err);
+    });
   });
 
-router.post('/deletepost', function(req,res){
+router.post('/deletepost', checkAuth, function(req,res){
     const id = req.body.id;
-    posts.deletepost(id, function(result){
+    Posts.findByIdAndRemove(id)
+    .then(result=>{
       res.send(result);
+      console.log('deleted');
     })
+    .catch(err=>{
+      return next(err);
+    });
   });
-
-router.post('/posts', function (req, res,next) {
-  posts.showpost(function(result){
+  
+router.post('/posts', checkAuth,function (req, res,next) {
+  Posts.find()
+  .then(result=> {
     res.send(result);
-  });
+  })
+  .catch(err=> {return next(err);});
 });
 
-router.post('/addpost', function (req, res) {
-  console.log(req.body.id);
+router.post('/addpost', checkAuth, function (req, res) {
   const title = req.body.title;
   const subject = req.body.subject;
   const author = req.body.author;
   const id = req.body.id;
   if(!id){
-    posts.addpost(title, subject, author, function(result){
-      res.send(result);
-  }); 
+      const newPost = new Posts({
+        title,
+        subject,
+        author
+      });
+      newPost.save()
+        .then(result=>{
+          res.send(result);
+          console.log('saved');
+        })
+        .catch(err=>{
+          return next(err);
+        });
 }
   else{
-    posts.updatepost(id, title, subject, author, function(result){
-      res.send(result);
-      console.log('updated');
-  }); 
+    Posts.findByIdAndUpdate(id, { $set: 
+      { 'title' : title,
+        'subject' : subject,
+        'author' : author
+      }
+  })
+  .then(result=>{
+    res.send(result);
+    console.log('updated');
+  })
+  .catch(err=>{
+    return next(err);
+  });
 }
 });
 

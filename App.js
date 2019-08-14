@@ -3,7 +3,13 @@ const app = express();
 const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
+const {
+    connect,
+    connection
+} = require('mongoose');
+const cookieParser = require('cookie-parser');
 
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname,'/public/index.html')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
@@ -11,6 +17,16 @@ app.use(bodyParser.urlencoded({extended:true}));
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 const config = require('./config/' + process.env.NODE_ENV);
+const {
+    mongo
+} = config;
+
+connect(mongo.connectionString, mongo.connectOptions, (err)=>{
+    if(err){
+        return err;
+    }
+        console.log('db has been connected');
+});
 
 const allowCrossDomain = function (req, res, next) {
     const browser = req.headers['user-agent'];

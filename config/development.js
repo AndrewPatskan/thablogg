@@ -19,9 +19,9 @@ module.exports = new class {
             // uri: '',
             // user: '',
         };
-
-        this.host = process.env.HOST || 'localhost';
-        this.port = process.env.PORT || 7777;
+        this.secret = 'superpupersecret';
+        this.host = 'localhost';
+        this.port = 7777;
         this.domen = `${this.host}:${this.port}`;
         this.serverUri = `https://${this.domen}`;
     }
