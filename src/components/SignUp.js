@@ -3,7 +3,8 @@ import '../styles/App.css';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import { FormErrors } from './FormErrors';
-import {VALIDATION} from '../regExp';
+import {VALIDATION} from '../config/regExp';
+import config from '../config/index';
 
 class SignUp extends Component {
   constructor(props){
@@ -75,7 +76,7 @@ handleUserInput = (e) => {
   signUp(){
       return axios({
       method:'post',
-      url:'http://localhost:7777',
+      url: config.serverUri,
       headers:{'Content-type':'application/json'},
       data:{
       firstname: this.state.firstname,
@@ -84,7 +85,7 @@ handleUserInput = (e) => {
       password: this.state.password
     }}    )
     .then(function (response) {
-      if(response.data==='success'){
+      if(response.data==='user registered'){
         window.location.assign('/signin')
       }
     })

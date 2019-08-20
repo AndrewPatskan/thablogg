@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../styles/App.css';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import config from '../config/index';
 
 class SignIn extends Component {
     constructor(props){
@@ -23,7 +24,7 @@ class SignIn extends Component {
     signIn(){
           return axios({
           method:'post',
-          url:'http://localhost:7777/signin',
+          url: config.serverUri + '/signin',
           headers:{'Content-type':'application/json'},
           data:{
             email: this.state.email,

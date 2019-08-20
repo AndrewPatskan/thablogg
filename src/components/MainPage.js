@@ -3,6 +3,7 @@ import '../styles/App.css';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import { FormErrors } from './FormErrors';
+import config from '../config/index';
 
 class MainPage extends Component {
     constructor(props) {
@@ -31,7 +32,7 @@ class MainPage extends Component {
         addPost(){
               return axios({
               method:'post',
-              url:'http://localhost:7777/addpost',
+              url: config.serverUri + '/addpost',
               headers:{'Content-type':'application/json'},
               data:{
               title: this.state.title,
@@ -58,7 +59,7 @@ class MainPage extends Component {
           const self = this;
           return axios({
             method:'post',
-            url:'http://localhost:7777/getpostwithid',
+            url: config.serverUri + '/getpostwithid',
             headers:{'Content-type':'application/json'},
             data:{
               id: id,

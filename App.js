@@ -15,8 +15,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
 const config = require('./config/' + process.env.NODE_ENV);
+
 const {
     mongo
 } = config;
@@ -46,8 +46,7 @@ const allowCrossDomain = function (req, res, next) {
 };
 app.use(allowCrossDomain);
 
-app.use(require('./routes/auth'));
-app.use(require('./routes/postActions'));
+app.use(require('./routes/index'));
 
 const httpServer = http.createServer(app);
 
