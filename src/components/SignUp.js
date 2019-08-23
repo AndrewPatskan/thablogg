@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import { FormErrors } from './FormErrors';
 import {VALIDATION} from '../config/regExp';
 import config from '../config/index';
+import ErrorHandler from '../helpers/error';
 
 class SignUp extends Component {
   constructor(props){
@@ -14,10 +15,7 @@ class SignUp extends Component {
     this.validateField = this.validateField.bind(this);
     this.validateForm = this.validateForm.bind(this);
     this.state = {
-      firstname:'',
-      lastname: '',
-      email: '',
-      password:'',
+      error: '',
       formErrors: {firstname: '', lastname: '', email: '', password: ''},
       firstnameValid: false,
       lastnameValid: false,
@@ -35,11 +33,9 @@ handleUserInput = (e) => {
 }
 
   validateField(fieldName, value) {
+
     let fieldValidationErrors = this.state.formErrors;
-    let firstnameValid = this.state.firstnameValid;
-    let lastnameValid = this.state.lastnameValid;
-    let emailValid = this.state.emailValid;
-    let passwordValid = this.state.passwordValid;
+    let {firstnameValid, lastnameValid, emailValid, passwordValid} = this.state;
 
     switch(fieldName) {
       case 'firstname':
@@ -83,21 +79,22 @@ handleUserInput = (e) => {
       lastname: this.state.lastname,
       email: this.state.email,
       password: this.state.password
-    }}    )
-    .then(function (response) {
+    }
+    })
+    .then((response) => {
       if(response.data==='user registered'){
         window.location.assign('/signin')
       }
     })
-    .catch(function (error) {
+    .catch((error) => {
         console.log(error);
-        const mess = document.createElement('h7');
-            const node = document.createTextNode('this email is already exists');
-            mess.appendChild(node);
-            const div = document.getElementById('signupform');
-            div.appendChild(mess);
+        if(!error.response){
+          this.setState({error: error.message});
+        }
+        else{
+          this.setState({error: error.response.data.message});
+        }
     });
-   
   }
   render() {
     return (
@@ -112,6 +109,7 @@ handleUserInput = (e) => {
           </div>
           <div className="panel panel-default">
             <FormErrors formErrors={this.state.formErrors} />
+            <ErrorHandler error={this.state.error} />
           </div>
       </div>
     );

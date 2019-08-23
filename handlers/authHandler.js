@@ -14,11 +14,11 @@ module.exports = {
         const { email, password } = req.body;
 
         if(!email){
-          throw error.notEnoughtParams('email');
+          throw error.notEnoughtParams();
         }
           
         if(!password){
-          throw error.notEnoughtParams('password');
+          throw error.notEnoughtParams();
         }
 
         const userModel = await User.findOne({email});
@@ -60,7 +60,7 @@ module.exports = {
       }
     
       if(!firstname && !lastname && !email && !password){
-        throw error.notEnoughtParams('every field must be filled');
+        throw error.notEnoughtParams();
       }
 
       const user = await User.findOne({ email });

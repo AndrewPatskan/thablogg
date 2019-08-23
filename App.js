@@ -50,6 +50,6 @@ app.use(require('./routes/index'));
 
 const httpServer = http.createServer(app);
 
-httpServer.on('listening', () =>  console.log('Started listening on port', config.port));
+httpServer.on('listening', () => console.log('Started listening on port', config.port));
 
 httpServer.listen(config.port, config.host);

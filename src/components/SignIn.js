@@ -3,6 +3,7 @@ import '../styles/App.css';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import config from '../config/index';
+import ErrorHandler from '../helpers/error';
 
 class SignIn extends Component {
     constructor(props){
@@ -12,7 +13,8 @@ class SignIn extends Component {
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.state = {
             email:'',
-            password:''
+            password:'',
+            error: ''
         };
     }
     handleEmailChange(e){
@@ -31,7 +33,7 @@ class SignIn extends Component {
             password: this.state.password
         }
       })
-        .then(function (response) {
+        .then((response) => {
           if(response){
             console.log(response);
             localStorage.setItem('token', response.data.token);
@@ -39,15 +41,16 @@ class SignIn extends Component {
             window.location.assign('/posts');
           }
         })
-        .catch(function (err) {
-          if(err){
-            const mess = document.createElement('h7');
-            const node = document.createTextNode('wrong email or password... try again');
-            mess.appendChild(node);
-            const div = document.getElementById('signinform');
-            div.appendChild(mess);
+        .catch((error) => {
+            console.log(error);
+            if(!error.response){
+              this.setState({error: error.message});
+            }
+            else{
+              this.setState({error: error.response.data.message});
+            }
           }
-        });
+        );
       }
     render() {
         return (
@@ -58,6 +61,7 @@ class SignIn extends Component {
                 <div>
                     <Link to='/'>sign up</Link>
                 </div>
+                <ErrorHandler error={this.state.error} />
         </div>
         );
   }

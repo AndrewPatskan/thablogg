@@ -1,4 +1,3 @@
-'use strict';
 class config {
     constructor() {
         this.host = process.env.HOST || 'localhost';

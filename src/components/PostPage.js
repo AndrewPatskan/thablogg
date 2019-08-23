@@ -3,6 +3,7 @@ import '../styles/App.css';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import config from '../config/index';
+import ErrorHandler from '../helpers/error';
 
 class PostPage extends Component {
     constructor(props) {
@@ -11,7 +12,8 @@ class PostPage extends Component {
         this.updatePost = this.updatePost.bind(this);
         this.logout = this.logout.bind(this);
         this.state = {
-          posts:[]
+          posts:[],
+          error: ''
         };
       }
 
@@ -36,6 +38,12 @@ class PostPage extends Component {
             })
             .catch((error) => {
                 console.log(error);
+                if(!error.response){
+                  this.setState({error: error.message});
+                }
+                else{
+                  this.setState({error: error.response.data.message});
+                }
             });
     }
 
@@ -46,7 +54,7 @@ class PostPage extends Component {
               headers: {'Content-type':'application/json'},
               data: {
                 token: localStorage.getItem('token')
-            }
+              }
         })
         .then((response) => {
             console.log(response);
@@ -54,13 +62,12 @@ class PostPage extends Component {
         })
         .catch((error) => {
           console.log(error);
-            const mess = document.createElement('h1');
-            const node = document.createTextNode('Please signin or register');
-            mess.appendChild(node);
-            const div = document.getElementById('viewform');
-            div.appendChild(mess);
-          
-            //window.location.assign('/signin');
+          if(!error.response){
+            this.setState({error: error.message});
+          }
+          else{
+            this.setState({error: error.response.data.message});
+          }
         });
     }
 
@@ -74,6 +81,7 @@ class PostPage extends Component {
     }
 
     render() {
+
       return (
         <div className='form1' id='viewform'>
           <Link to='/addpost'><button className='btn' id='viewposts'>add post</button></Link>
@@ -100,6 +108,7 @@ class PostPage extends Component {
                       </div>
             }.bind(this))
           }
+          <ErrorHandler error={this.state.error} />
         </div>
       )
     }

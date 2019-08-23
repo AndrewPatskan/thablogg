@@ -4,6 +4,7 @@ import axios from 'axios';
 import {Link} from 'react-router-dom';
 import { FormErrors } from './FormErrors';
 import config from '../config/index';
+import ErrorHandler from '../helpers/error';
 
 class MainPage extends Component {
     constructor(props) {
@@ -14,9 +15,7 @@ class MainPage extends Component {
         this.validateField = this.validateField.bind(this);
         this.validateForm = this.validateForm.bind(this);
         this.state = {
-          title:'',
-          subject:'',
-          id: '',
+          error: '',
           formErrors: {subject: ''},
           subjestValid: false,
           formValid: false
@@ -41,22 +40,22 @@ class MainPage extends Component {
               id: this.state.id,
               token: localStorage.getItem('token')
             }})
-            .then(function (response) {
+            .then((response) => {
               console.log(response);
               window.location.assign('/posts')
             })
-            .catch(function (error) {
+            .catch((error) => {
               console.log(error);
-              const mess = document.createElement('h1');
-              const node = document.createTextNode('Please signin or register');
-              mess.appendChild(node);
-              const div = document.getElementById('addform');
-              div.appendChild(mess);
+              if(!error.response){
+                this.setState({error: error.message});
+              }
+              else{
+                this.setState({error: error.response.data.message});
+              }
             });
         }
         getPostWithId(){
           const id = this.props.match.params.id;
-          const self = this;
           return axios({
             method:'post',
             url: config.serverUri + '/getpostwithid',
@@ -66,16 +65,22 @@ class MainPage extends Component {
               token: localStorage.getItem('token')
             }
           })
-          .then(function (response) {
+          .then((response) => {
             if(response){
-              self.setState({id:response.data._id});
-              self.setState({title:response.data.title});
-              self.setState({subject:response.data.subject});
-              self.setState({author:response.data.author});  
+              this.setState({id:response.data._id,
+                            title:response.data.title,
+                            subject:response.data.subject,
+                            author:response.data.author});
             }
           })
-          .catch(function (error) {
-            console.log('error is ',error);
+          .catch((error) => {
+            console.log(error);
+            if(!error.response){
+              this.setState({error: error.message});
+            }
+            else{
+              this.setState({error: error.response.data.message});
+            }
           });
         }
         componentDidMount(){
@@ -119,6 +124,7 @@ class MainPage extends Component {
             </div>
             <div className="panel panel-default">
               <FormErrors formErrors={this.state.formErrors} />
+              <ErrorHandler error={this.state.error}/>
             </div>
         </div>
       )

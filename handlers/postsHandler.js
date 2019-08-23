@@ -7,7 +7,7 @@ module.exports = {
 
         const { title, subject, author, id } = req.body;
         if(!subject && !author){
-          throw error.notEnoughtParams('subject or author');
+          throw error.notEnoughtParams();
         }
 
         if(!id){
@@ -48,7 +48,7 @@ module.exports = {
       try{
         const { id } = req.body;
         if(!id){
-          throw error.notEnoughtParams('id');
+          throw error.notEnoughtParams();
         }
         const result = await Posts.findByIdAndRemove(id);
         if(!result){
@@ -76,9 +76,7 @@ module.exports = {
     getPost: async (req, res, next) => {
       try{
         const { id } = req.body;
-        if(!id){
-          throw error.notEnoughtParams('id');
-        }
+
         const result = await Posts.findById(id);
         if(!result){
           throw error.notFound();
