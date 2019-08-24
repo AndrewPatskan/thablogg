@@ -26,7 +26,7 @@ class SignIn extends Component {
     signIn(){
           return axios({
           method:'post',
-          url: config.serverUri + '/signin',
+          url: '/signin',
           headers:{'Content-type':'application/json'},
           data:{
             email: this.state.email,
