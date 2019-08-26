@@ -10,11 +10,14 @@ const {
 const cookieParser = require('cookie-parser');
 
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname,'/public/index.html')));
-app.use(express.static(path.join(__dirname,'/build'))) 
+
+app.use(express.static(path.join(__dirname,'./public/index.html')));
+
+/* app.use(express.static(path.join(__dirname,'/build'))) 
 app.get("*",(req,res) => { 
     res.sendFile(path.join(__dirname + 'build/index.html')) 
-}) 
+}) */
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
@@ -50,7 +53,12 @@ const allowCrossDomain = function (req, res, next) {
 };
 app.use(allowCrossDomain);
 
-app.use(require('./routes/index'));
+const router = require('./routes/index');
+app.use(router);
+
+/*app.listen(()=>{
+    console.log('Started listening on port', config.port);
+}); */
 
 const httpServer = http.createServer(app);
 
